@@ -1,0 +1,25 @@
+# Core Framework
+streamlit==1.32.0
+
+# Web Scraping
+requests==2.31.0
+beautifulsoup4==4.12.3
+lxml==5.1.0
+
+# Machine Learning & Embeddings
+sentence-transformers==2.5.1
+torch==2.2.1
+transformers==4.38.2
+
+# Vector Database
+chromadb==0.4.24
+
+# LLM Integration
+anthropic==0.18.1
+
+# Utilities
+numpy==1.26.4
+pandas==2.2.1
+
+# Optional: For better HTML parsing
+html5lib==1.1
