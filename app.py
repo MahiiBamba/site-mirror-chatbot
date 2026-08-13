@@ -6,6 +6,19 @@ AI-Powered Website Mirror Dashboard with RAG Chat
 import streamlit as st
 import sys
 from pathlib import Path
+from database import create_conversation, save_message, get_conversation_history, format_conversation_history
+
+if "conversation_id" not in st.session_state:
+    st.session_state.conversation_id = create_conversation()
+
+print("CONVERSATION ID:", st.session_state.conversation_id)
+
+history_text = format_conversation_history(
+    st.session_state.conversation_id
+)
+
+print("FORMATTED HISTORY:")
+print(history_text)
 
 # Add project root to path
 sys.path.insert(0, str(Path(__file__).parent))
@@ -16,7 +29,7 @@ from dashboard.sitemap import display_sitemap
 from scraper.crawler import crawl_website
 from rag.vectordb import initialize_vector_db, store_embeddings
 from rag.retriever import retrieve_relevant_chunks
-from rag.qa_chain import generate_answer
+from rag.qa_chain import generate_answer, rewrite_query
 from rag.chunker import chunk_documents
 from rag.embeddings import generate_embeddings
 import json
@@ -427,30 +440,61 @@ elif st.session_state.crawl_status == 'complete' and st.session_state.crawl_data
         with col1:
             if st.button("Send", use_container_width=True):
                 if user_question:
-                    # Add user message
+
+
+                    history_text = format_conversation_history(
+                        st.session_state.conversation_id
+                    )
+
+                    rewritten_question = rewrite_query(
+                        user_question,
+                        history_text
+                    )
+
+                    print("ORIGINAL QUESTION:", user_question)
+                    print("REWRITTEN QUESTION:", rewritten_question)
+
+                    # Save user message to database
+                    save_message(
+                        st.session_state.conversation_id,
+                        "user",
+                        user_question
+                    )
+
+                    # Add user message to Streamlit chat history
                     st.session_state.chat_history.append({
                         'role': 'user',
                         'content': user_question
                     })
-                    
+
                     with st.spinner("Thinking..."):
                         # Retrieve relevant chunks
                         relevant_chunks = retrieve_relevant_chunks(
-                            user_question, 
+                            user_question,
                             st.session_state.vector_db,
                             top_k=8
                         )
-                        
+
                         # Generate answer
-                        answer, sources = generate_answer(user_question, relevant_chunks)
-                        
-                        # Add bot message
+                        answer, sources = generate_answer(
+                            user_question,
+                            relevant_chunks
+                        )
+
+                        # Save assistant response to database
+                        save_message(
+                            st.session_state.conversation_id,
+                            "assistant",
+                            answer
+                        )
+
+                        # Add bot message to Streamlit chat history
                         st.session_state.chat_history.append({
                             'role': 'assistant',
                             'content': answer,
                             'sources': sources
                         })
-                    
+
                     st.rerun()
         
         with col2:

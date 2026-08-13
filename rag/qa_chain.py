@@ -152,3 +152,63 @@ def generate_streaming_answer(
 
     except Exception as e:
         yield f"Error generating answer: {str(e)}"
+
+
+
+def rewrite_query(query: str, history: str) -> str:
+    """
+    Rewrite the current question using conversation history
+    so it can be understood independently.
+    """
+
+    if not history:
+        return query
+
+    prompt = f"""
+You are a query rewriting assistant for a website question-answering system.
+
+Your ONLY task is to rewrite the CURRENT QUESTION into a standalone
+question for semantic search.
+
+IMPORTANT RULES:
+
+1. Preserve the CURRENT QUESTION's exact meaning and intent.
+2. Use conversation history ONLY to resolve references such as:
+   "it", "they", "this", "that", "which one", "what about", etc.
+3. NEVER infer, assume, or invent facts.
+4. NEVER introduce categories, technologies, names, entities, or details
+   that are not explicitly present in the conversation.
+5. Preserve important terms from the CURRENT QUESTION, such as
+   "backend", "frontend", "price", "refund", "location", etc.
+6. If a reference cannot be resolved confidently, keep the reference
+   or make the smallest possible clarification.
+7. If the CURRENT QUESTION is already standalone, return it unchanged.
+8. Do NOT answer the question.
+9. Return ONLY the rewritten question.
+
+Conversation history:
+{history}
+
+CURRENT QUESTION:
+{query}
+
+STANDALONE QUESTION:
+"""
+
+    try:
+        response = ollama.chat(
+            model="llama3.1:8b",
+            messages=[
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ]
+        )
+
+        rewritten_query = response["message"]["content"].strip()
+
+        return rewritten_query
+
+    except Exception:
+        return query
