@@ -87,19 +87,19 @@ app.py              → Flask application
 ## 🖥️ Screenshots
 
 ### Landing Page
-![Site-Mirror Homepage](assets/01-homepage.png)
+![Site-Mirror Homepage](assets/01-homepage.png.png)
 
 ### Pipeline Modules
-![Pipeline Modules](assets/02-pipeline-modules.png)
+![Pipeline Modules](assets/02-pipeline-modules.png.png)
 
 ### RAG Pipeline
-![RAG Pipeline](assets/03-rag-pipeline.png)
+![RAG Pipeline](assets/03-rag-pipeline.png.png)
 
 ### Crawling Dashboard
-![Crawling Dashboard](assets/04-crawling-console.png)
+![Crawling Dashboard](assets/04-crawling-console.png.png)
 
 ### AI Chat
-![AI Chat](assets/05-ai-chat.png)
+![AI Chat](assets/05-ai-chat.png.png)
 
 ## 🚀 Getting Started
 
