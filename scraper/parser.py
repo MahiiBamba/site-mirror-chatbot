@@ -1,21 +1,14 @@
-"""
-HTML Parser
-Advanced HTML parsing and content extraction
-"""
 
 from bs4 import BeautifulSoup
 from typing import Dict, List
 import re
 
 def parse_html(html_content: str) -> BeautifulSoup:
-    """Parse HTML content into BeautifulSoup object"""
+    
     return BeautifulSoup(html_content, 'html.parser')
 
 def extract_main_content(soup: BeautifulSoup) -> str:
-    """
-    Extract main content from HTML, removing navigation, ads, etc.
-    """
-    # Remove unwanted elements
+    
     for element in soup(['script', 'style', 'nav', 'footer', 'header', 'aside', 'iframe']):
         element.decompose()
     
@@ -28,7 +21,6 @@ def extract_main_content(soup: BeautifulSoup) -> str:
         return soup.get_text(separator='\n', strip=True)
 
 def extract_metadata(soup: BeautifulSoup) -> Dict:
-    """Extract metadata from HTML"""
     metadata = {
         'title': '',
         'description': '',
@@ -59,7 +51,7 @@ def extract_metadata(soup: BeautifulSoup) -> Dict:
     return metadata
 
 def extract_links(soup: BeautifulSoup, base_url: str) -> List[Dict]:
-    """Extract all links with their text"""
+
     links = []
     
     for link in soup.find_all('a', href=True):
@@ -73,7 +65,7 @@ def extract_links(soup: BeautifulSoup, base_url: str) -> List[Dict]:
     return links
 
 def extract_headings_hierarchy(soup: BeautifulSoup) -> List[Dict]:
-    """Extract heading hierarchy for document structure"""
+    
     headings = []
     
     for heading in soup.find_all(['h1', 'h2', 'h3', 'h4', 'h5', 'h6']):
@@ -85,7 +77,7 @@ def extract_headings_hierarchy(soup: BeautifulSoup) -> List[Dict]:
     return headings
 
 def extract_tables(soup: BeautifulSoup) -> List[Dict]:
-    """Extract tables as structured data"""
+    
     tables = []
     
     for table in soup.find_all('table'):

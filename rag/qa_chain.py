@@ -1,17 +1,10 @@
-"""
-QA Chain
-Generate answers using local Ollama Llama model and retrieved context
-"""
+
 
 from typing import List, Dict, Tuple
 import ollama
 
 
 def create_rag_prompt(query: str, context_chunks: List[Dict]) -> str:
-    """
-    Create formatted context for RAG
-    """
-
     context_parts = []
 
     for i, chunk in enumerate(context_chunks, 1):
@@ -60,9 +53,6 @@ def generate_answer(
     query: str,
     context_chunks: List[Dict]
 ) -> Tuple[str, List[str]]:
-    """
-    Generate answer using local Ollama Llama
-    """
 
     if not context_chunks:
         return (
@@ -74,7 +64,6 @@ def generate_answer(
 
         prompt = create_rag_prompt(query, context_chunks)
 
-        # Debug
         print("\n" + "=" * 80)
         print("QUESTION:", query)
         print("=" * 80)
@@ -121,9 +110,7 @@ def generate_streaming_answer(
     query: str,
     context_chunks: List[Dict]
 ):
-    """
-    Streaming answer using Ollama
-    """
+    
 
     if not context_chunks:
         yield "I could not find any relevant information to answer your question."
@@ -156,10 +143,6 @@ def generate_streaming_answer(
 
 
 def rewrite_query(query: str, history: str) -> str:
-    """
-    Rewrite the current question using conversation history
-    so it can be understood independently.
-    """
 
     if not history:
         return query

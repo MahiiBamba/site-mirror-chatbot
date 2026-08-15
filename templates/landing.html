@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Site-Mirror Chatbot — Chat with Any Website Using Local AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/static/css/landing.css"/>
+</head>
+<body>
+
+
+<nav class="nav">
+  <a href="/" class="nav-logo">
+    <span class="logo-bracket">[</span>Site-Mirror<span class="logo-bracket">]</span>
+  </a>
+  <a href="/dashboard" class="btn-outline">Open Console</a>
+</nav>
+
+
+<section class="hero">
+  <!-- Pipeline badge -->
+  <div class="pipeline-badge">
+    <span class="pipe-step">Crawler</span>
+    <span class="pipe-arrow">→</span>
+    <span class="pipe-step">Embeddings</span>
+    <span class="pipe-arrow">→</span>
+    <span class="pipe-step">Vector DB</span>
+    <span class="pipe-arrow">→</span>
+    <span class="pipe-step">Local LLM</span>
+    <span class="pipe-arrow">→</span>
+    <span class="pipe-step accent">AI Response</span>
+  </div>
+
+  <p class="hero-sub-label">100% local · BeautifulSoup · ChromaDB · Ollama</p>
+
+  <h1 class="hero-title">
+    Chat with Any Website<br/>
+    <span class="hero-gradient">Using AI</span>
+  </h1>
+
+  <p class="hero-desc">
+    Transform any website into an intelligent AI assistant using Retrieval-Augmented
+    Generation powered entirely by local AI models.
+  </p>
+
+  <div class="hero-cta">
+    <a href="/dashboard" class="btn-primary">Start Crawling</a>
+    <a href="/dashboard" class="btn-ghost">View Demo</a>
+  </div>
+</section>
+
+
+<section class="section">
+  <p class="section-eyebrow">Modules</p>
+  <h2 class="section-title">Every part of the pipeline, visualised</h2>
+  <p class="section-desc">Each card maps directly to a module in the Python implementation.</p>
+
+  <div class="modules-grid">
+    <div class="module-card">
+      <div class="module-icon">🕷️</div>
+      <h3>Website Crawling</h3>
+      <p>Recursive BeautifulSoup crawler walks internal links and captures every page.</p>
+      <code class="module-tag">crawler.py</code>
+    </div>
+    <div class="module-card">
+      <div class="module-icon">🔍</div>
+      <h3>Semantic Search</h3>
+      <p>Cosine similarity retrieval surfaces the passages that actually answer a question.</p>
+      <code class="module-tag">retriever.py</code>
+    </div>
+    <div class="module-card">
+      <div class="module-icon">🦙</div>
+      <h3>Local AI Inference</h3>
+      <p>A Llama model served by Ollama generates every answer on your own machine.</p>
+      <code class="module-tag">qa_chain.py</code>
+    </div>
+    <div class="module-card">
+      <div class="module-icon">🗄️</div>
+      <h3>Vector Database</h3>
+      <p>ChromaDB persists 384-dimensional embeddings with page-level metadata.</p>
+      <code class="module-tag">vectordb.py</code>
+    </div>
+    <div class="module-card">
+      <div class="module-icon">💬</div>
+      <h3>AI Chat</h3>
+      <p>Ask follow-up questions and inspect the retrieved context behind each answer.</p>
+      <code class="module-tag">app.py</code>
+    </div>
+    <div class="module-card">
+      <div class="module-icon">❓</div>
+      <h3>Automatic FAQ Generation</h3>
+      <p>The FAQ extractor distils recurring questions with confidence scores.</p>
+      <code class="module-tag">faq_extractor.py</code>
+    </div>
+    <div class="module-card">
+      <div class="module-icon">📋</div>
+      <h3>Website Summary</h3>
+      <p>A structured overview of topics, key sections and reading time.</p>
+      <code class="module-tag">summary.py</code>
+    </div>
+    <div class="module-card">
+      <div class="module-icon">📊</div>
+      <h3>Interactive Dashboard</h3>
+      <p>Pages, chunks, tokens and processing status in one live console.</p>
+      <code class="module-tag">dashboard</code>
+    </div>
+    <div class="module-card">
+      <div class="module-icon">🗺️</div>
+      <h3>Site Map Visualization</h3>
+      <p>Expandable tree of crawled pages with word counts and link graphs.</p>
+      <code class="module-tag">sitemap.py</code>
+    </div>
+  </div>
+</section>
+
+
+<section class="section section-alt">
+  <p class="section-eyebrow">Workflow</p>
+  <h2 class="section-title">From URL to grounded answer</h2>
+  <p class="section-desc">The exact sequence executed by the Python pipeline on every crawl and query.</p>
+
+  <div class="workflow">
+    <div class="workflow-step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h4>Enter Website URL</h4>
+        <p>A seed URL is queued for the recursive BeautifulSoup crawler.</p>
+        <code class="step-tag">Website Crawler</code>
+      </div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h4>Crawl Website</h4>
+        <p>Recursive crawl follows internal links and collects raw HTML.</p>
+        <code class="step-tag">Website Crawler</code>
+      </div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h4>Extract Clean Text</h4>
+        <p>BeautifulSoup strips nav, scripts and boilerplate into clean text.</p>
+        <code class="step-tag">HTML Parser · Text Cleaner</code>
+      </div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <h4>Split into Chunks</h4>
+        <p>Recursive character chunking with configurable size and overlap.</p>
+        <code class="step-tag">Text Chunker</code>
+      </div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">5</div>
+      <div class="step-body">
+        <h4>Generate Sentence Embeddings</h4>
+        <p>SentenceTransformer all-MiniLM-L6-v2 produces 384-dim vectors.</p>
+        <code class="step-tag">Embedding Generator</code>
+      </div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">6</div>
+      <div class="step-body">
+        <h4>Store in ChromaDB</h4>
+        <p>Vectors and metadata persist in the local ChromaDB collection.</p>
+        <code class="step-tag">ChromaDB</code>
+      </div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">7</div>
+      <div class="step-body">
+        <h4>Retrieve Relevant Chunks</h4>
+        <p>Cosine similarity search returns the top-K matching chunks.</p>
+        <code class="step-tag">Semantic Retriever</code>
+      </div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">8</div>
+      <div class="step-body">
+        <h4>Generate Response</h4>
+        <p>Ollama runs Llama locally with the retrieved context.</p>
+        <code class="step-tag">Local Llama Model</code>
+      </div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">9</div>
+      <div class="step-body">
+        <h4>Display Answer</h4>
+        <p>Answer rendered with sources, similarity scores and context.</p>
+        <code class="step-tag">Dashboard</code>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <span class="footer-logo">Site-Mirror Chatbot</span>
+  <span class="footer-desc">Frontend for a local RAG pipeline · BeautifulSoup · SentenceTransformers · ChromaDB · Ollama</span>
+  <a href="/dashboard" class="btn-outline btn-sm">Open Console →</a>
+</footer>
+
+</body>
+</html>

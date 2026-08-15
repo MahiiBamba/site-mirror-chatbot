@@ -1,7 +1,4 @@
-"""
-Sitemap Display
-Visual representation of crawled site structure
-"""
+
 
 import streamlit as st
 from typing import Dict, List
@@ -9,15 +6,7 @@ from urllib.parse import urlparse
 from collections import defaultdict
 
 def build_sitemap_tree(crawl_data: Dict) -> Dict:
-    """
-    Build a tree structure from crawled pages
     
-    Args:
-        crawl_data: Crawled website data
-    
-    Returns:
-        Tree structure
-    """
     pages = crawl_data.get('pages', [])
     base_url = crawl_data.get('base_url', '')
     
@@ -25,7 +14,7 @@ def build_sitemap_tree(crawl_data: Dict) -> Dict:
     parsed_base = urlparse(base_url)
     base_domain = f"{parsed_base.scheme}://{parsed_base.netloc}"
     
-    # Group pages by depth
+
     tree = defaultdict(list)
     
     for page in pages:
@@ -33,7 +22,7 @@ def build_sitemap_tree(crawl_data: Dict) -> Dict:
         url = page.get('url', '')
         title = page.get('title', url)
         
-        # Get path from URL
+    
         path = url.replace(base_domain, '')
         if not path:
             path = '/'
@@ -47,12 +36,7 @@ def build_sitemap_tree(crawl_data: Dict) -> Dict:
     return dict(tree)
 
 def display_sitemap(crawl_data: Dict):
-    """
-    Display sitemap in sidebar
     
-    Args:
-        crawl_data: Crawled website data
-    """
     tree = build_sitemap_tree(crawl_data)
     
     if not tree:
@@ -80,15 +64,7 @@ def display_sitemap(crawl_data: Dict):
             )
 
 def create_sitemap_visualization(crawl_data: Dict) -> str:
-    """
-    Create ASCII-art style sitemap visualization
     
-    Args:
-        crawl_data: Crawled website data
-    
-    Returns:
-        ASCII art sitemap
-    """
     tree = build_sitemap_tree(crawl_data)
     
     lines = []

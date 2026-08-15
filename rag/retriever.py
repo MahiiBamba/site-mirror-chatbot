@@ -8,26 +8,16 @@ import chromadb
 from rag.embeddings import generate_embedding
 from rag.vectordb import query_vector_db
 
+
+
 def retrieve_relevant_chunks(
     query: str,
     collection: chromadb.Collection,
     top_k: int = 8
 ) -> List[Dict]:
-    """
-    Retrieve most relevant chunks for a query
-    
-    Args:
-        query: User query
-        collection: ChromaDB collection
-        top_k: Number of chunks to retrieve
-    
-    Returns:
-        List of relevant chunks with metadata
-    """
-    # Generate embedding for query
+
     query_embedding = generate_embedding(query)
     
-    # Query vector database
     results = query_vector_db(
         collection=collection,
         query_embedding=query_embedding.tolist(),
@@ -41,7 +31,6 @@ def retrieve_relevant_chunks(
             len(results["documents"][0])
         )
     
-    # Format results
     chunks = []
     
     if results['documents'] and len(results['documents']) > 0:
@@ -62,22 +51,9 @@ def retrieve_with_filter(
     metadata_filter: Dict,
     top_k: int = 8
 ) -> List[Dict]:
-    """
-    Retrieve chunks with metadata filtering
-    
-    Args:
-        query: User query
-        collection: ChromaDB collection
-        metadata_filter: Filter criteria (e.g., {'source_url': 'specific_url'})
-        top_k: Number of chunks to retrieve
-    
-    Returns:
-        List of filtered relevant chunks
-    """
-    # Generate embedding for query
+
     query_embedding = generate_embedding(query)
     
-    # Query with filter
     results = query_vector_db(
         collection=collection,
         query_embedding=query_embedding.tolist(),
@@ -85,7 +61,7 @@ def retrieve_with_filter(
         filter_metadata=metadata_filter
     )
     
-    # Format results
+
     chunks = []
     
     if results['documents'] and len(results['documents']) > 0:
@@ -101,38 +77,12 @@ def retrieve_with_filter(
     return chunks
 
 def rerank_chunks(chunks: List[Dict], query: str) -> List[Dict]:
-    """
-    Re-rank chunks based on additional criteria
     
-    This is a placeholder for more advanced re-ranking
-    Currently just returns chunks as-is (already sorted by similarity)
-    
-    Args:
-        chunks: Retrieved chunks
-        query: Original query
-    
-    Returns:
-        Re-ranked chunks
-    """
-    # Could implement:
-    # - Cross-encoder re-ranking
-    # - Keyword matching boost
-    # - Recency boost
-    # - Source diversity
     
     return chunks
 
 def deduplicate_chunks(chunks: List[Dict], similarity_threshold: float = 0.95) -> List[Dict]:
-    """
-    Remove duplicate or highly similar chunks
     
-    Args:
-        chunks: List of chunks
-        similarity_threshold: Threshold for considering chunks duplicates
-    
-    Returns:
-        Deduplicated chunks
-    """
     if not chunks:
         return []
     
@@ -142,7 +92,6 @@ def deduplicate_chunks(chunks: List[Dict], similarity_threshold: float = 0.95) -
         is_duplicate = False
         
         for unique_chunk in unique_chunks:
-            # Simple text similarity check
             if chunk['text'] == unique_chunk['text']:
                 is_duplicate = True
                 break

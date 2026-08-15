@@ -1,7 +1,3 @@
-"""
-Website Crawler
-Discovers and extracts content from websites
-"""
 
 import requests
 from bs4 import BeautifulSoup
@@ -24,7 +20,7 @@ class WebsiteCrawler:
         self.base_domain = f"{parsed.scheme}://{parsed.netloc}"
         
     def is_valid_url(self, url: str) -> bool:
-        """Check if URL should be crawled"""
+       
         if not url or url in self.visited_urls:
             return False
         
@@ -64,7 +60,7 @@ class WebsiteCrawler:
         return text
     
     def extract_structured_content(self, soup: BeautifulSoup) -> Dict:
-        """Extract structured content like headings, paragraphs, etc."""
+        
         content = {
             'title': '',
             'headings': [],
@@ -166,16 +162,6 @@ class WebsiteCrawler:
         }
 
 def crawl_website(url: str, max_depth: int = 1, max_pages: int = 1) -> Dict:
-    """
-    Main function to crawl a website
-    
-    Args:
-        url: Starting URL
-        max_depth: How deep to crawl (0 = only start page)
-        max_pages: Maximum number of pages to crawl
-    
-    Returns:
-        Dictionary with crawled data
-    """
+
     crawler = WebsiteCrawler(url, max_depth, max_pages)
     return crawler.crawl()

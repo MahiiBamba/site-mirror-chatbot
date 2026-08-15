@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Console — Site-Mirror Chatbot</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/static/css/dashboard.css"/>
+</head>
+<body>
+
+<div class="console-layout">
+
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-header">
+      <a href="/" class="sidebar-logo">
+        <span class="logo-bracket">[</span>SM<span class="logo-bracket">]</span>
+      </a>
+      <span class="sidebar-title">Site-Mirror</span>
+    </div>
+
+    <hr class="divider"/>
+
+    <!-- Crawler form -->
+    <div class="sidebar-section">
+      <label class="label">🌐 Website URL</label>
+      <input id="url-input" class="console-input" type="url" placeholder="https://example.com" autocomplete="off"/>
+    </div>
+
+    <div class="sidebar-section">
+      <label class="label">Crawl Depth — <span id="depth-val" class="label-val">2</span></label>
+      <input id="depth-range" type="range" min="1" max="3" value="2" class="range-input"/>
+    </div>
+
+    <div class="sidebar-section">
+      <label class="label">Max Pages — <span id="pages-val" class="label-val">20</span></label>
+      <input id="pages-range" type="range" min="1" max="50" value="1" class="range-input"/>
+    </div>
+
+    <button id="crawl-btn" class="btn-crawl">
+      <span id="crawl-btn-text">🚀 Start Crawling</span>
+    </button>
+
+    <hr class="divider"/>
+
+   
+    <div class="sidebar-section">
+      <label class="label">Status</label>
+      <div id="status-badge" class="status-badge status-idle">
+        <span class="status-dot"></span> Ready
+      </div>
+    </div>
+
+    <!-- Stats (shown post-crawl) -->
+    <div id="stats-block" class="stats-block hidden">
+      <div class="stat-item">
+        <span class="stat-key">pages</span>
+        <span id="stat-pages" class="stat-val">—</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-key">links</span>
+        <span id="stat-links" class="stat-val">—</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-key">chunks</span>
+        <span id="stat-chunks" class="stat-val">—</span>
+      </div>
+    </div>
+
+    
+    <div id="sitemap-section" class="hidden">
+      <hr class="divider"/>
+      <label class="label">🗺️ Sitemap</label>
+      <ul id="sitemap-list" class="sitemap-list"></ul>
+    </div>
+
+  </aside>
+
+  
+  <main class="console-main">
+
+    <!-- IDLE STATE -->
+    <div id="idle-screen" class="idle-screen">
+      <div class="idle-art">
+        <pre class="ascii-art">
+  ┌─────────────────────────────┐
+  │  Site-Mirror RAG Console    │
+  │                             │
+  │  URL ──► Crawl ──► Embed   │
+  │          ──► Index ──► Chat │
+  └─────────────────────────────┘</pre>
+      </div>
+      <p class="idle-hint">Enter a URL in the sidebar and hit <kbd>Start Crawling</kbd></p>
+    </div>
+
+    
+    <div id="processing-screen" class="processing-screen hidden">
+      <div class="log-window">
+        <div class="log-header">
+          <span class="log-dot red"></span>
+          <span class="log-dot yellow"></span>
+          <span class="log-dot green"></span>
+          <span class="log-title">crawler.log</span>
+        </div>
+        <div id="log-body" class="log-body">
+          <p class="log-line"><span class="log-ts">00:00</span> <span class="log-tag info">INFO</span> Starting crawl…</p>
+        </div>
+      </div>
+    </div>
+
+    
+    <div id="dashboard-screen" class="dashboard-screen hidden">
+
+    
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="overview">Overview</button>
+        <button class="tab-btn" data-tab="faqs">FAQs</button>
+        <button class="tab-btn" data-tab="chat">Chat</button>
+      </div>
+
+      
+      <div id="tab-overview" class="tab-panel">
+        <div class="overview-grid">
+          <div class="panel">
+            <div class="panel-header">
+              <span class="panel-icon">📋</span> Summary
+            </div>
+            <div class="panel-body">
+              <h3 id="site-title" class="site-title">Loading…</h3>
+              <p id="site-summary" class="site-summary-text"></p>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-header">
+              <span class="panel-icon">📈</span> Stats
+            </div>
+            <div class="panel-body">
+              <div class="kv-row"><span class="kv-key">pages_indexed</span><span id="kv-pages" class="kv-val">—</span></div>
+              <div class="kv-row"><span class="kv-key">total_links</span><span id="kv-links" class="kv-val">—</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div id="topics-block" class="topics-block hidden">
+          <div class="panel-header"><span class="panel-icon">🏷️</span> Topics</div>
+          <div id="topics-list" class="topics-list"></div>
+        </div>
+      </div>
+
+     
+      <div id="tab-faqs" class="tab-panel hidden">
+        <div class="panel">
+          <div class="panel-header"><span class="panel-icon">❓</span> Frequently Asked Questions</div>
+          <div class="panel-body">
+            <div id="faq-loading" class="log-line"><span class="log-tag info">INFO</span> Extracting FAQs…</div>
+            <div id="faq-list" class="faq-list"></div>
+            <div id="faq-empty" class="empty-state hidden">No FAQs detected on this website.</div>
+          </div>
+        </div>
+      </div>
+
+      
+      <div id="tab-chat" class="tab-panel hidden">
+        <div class="chat-panel">
+          <div class="panel-header"><span class="panel-icon">💬</span> Chat with Website</div>
+
+          <div id="chat-history" class="chat-history"></div>
+
+          <div id="chat-empty" class="chat-empty">
+            <span class="chat-empty-icon">💬</span>
+            <p>Ask anything about the crawled website.</p>
+          </div>
+
+          <div class="chat-input-row">
+            <input id="chat-input" class="console-input chat-input" type="text"
+                   placeholder="e.g. What is the refund policy?" autocomplete="off"/>
+            <button id="send-btn" class="btn-send">Send</button>
+            <button id="clear-btn" class="btn-clear">Clear</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+</div>
+
+<script src="/static/js/dashboard.js"></script>
+</body>
+</html>

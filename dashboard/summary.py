@@ -1,17 +1,11 @@
-"""
-Site Summary Generator
-Generate AI-powered summaries using Ollama
-"""
+
 
 from typing import Dict, List
 import ollama
 
 
 def generate_site_summary(crawl_data: Dict) -> Dict:
-    """
-    Generate website summary using Llama
-    """
-
+    
     pages = crawl_data.get("pages", [])
 
     if not pages:
@@ -115,9 +109,7 @@ TOPICS:
 def extract_key_pages(
     crawl_data: Dict
 ) -> List[Dict]:
-    """
-    Identify important pages
-    """
+    
 
     pages = crawl_data.get("pages", [])
 
